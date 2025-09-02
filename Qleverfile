@@ -1,0 +1,37 @@
+# Qleverfile for ODIS
+#
+# qlever get-data  # downloads .zip file of size 13 MB, uncompressed to 323 MB
+# qlever index     # takes ~10 seconds and ~1 GB RAM (on an AMD Ryzen 9 5900X)
+# qlever start     # starts the server (instant)
+# removed from ui section: UI_CONFIG = odis
+
+[data]
+NAME              = odis
+BASE_URL          = http://ossapi.oceaninfohub.org/public/graphv3
+DATA_FILES        = acma_release.nq,africaioc_release.nq,aquadocs_release.nq,argovis_release.nq,bebop_release.nq,benguelacc_release.nq,bmdc_release.nq,bodc_release.nq,calcofi_release.nq,caribbeanmarineatlas_release.nq,cchdo_release.nq,cioos_release.nq,cioosatlantic_release.nq,edmerp_release.nq,edmo_release.nq,emodnet_release.nq,euroceanevents_release.nq,euroceaninstitutions_release.nq,euroceanorgs_release.nq,euroceanprojects_release.nq,euroceanvessels_release.nq,inanodc_release.nq,incois_release.nq,invemardocuments_release.nq,invemarexperts_release.nq,invemargeo_release.nq,invemarinstitutions_release.nq,invemartraining_release.nq,invemarvessels_release.nq,isa_release.nq,marcobolo_release.nq,marineie_release.nq,marinetraining_release.nq,maspawio_release.nq,medin_release.nq,metsrcn_release.nq,mims_release.nq,ncei_release.nq,obis_release.nq,obps_release.nq,oceanexpert_release.nq,oceanexperts_release.nq,oceanscape_release.nq,odiscat_release.nq,openasfa_release.nq,osmc_release.nq,pdh_release.nq,pedp_release.nq,r2r_release.nq,rda_release.nq,spase_release.nq,unep_release.nq,wiosymphony_release.nq,wod_release.nq,zmt_release.nq
+#DATA_FILES        = acma_release.nq,africaioc_release.nq,aquadocs_release.nq,argovis_release.nq,bebop_release.nq,benguelacc_release.nq,bmdc_release.nq,bodc_release.nq,calcofi_release.nq,caribbeanmarineatlas_release.nq,cchdo_release.nq,cioos_release.nq,cioosatlantic_release.nq,edmerp_release.nq,edmo_release.nq,emodnet_release.nq,euroceanevents_release.nq,euroceaninstitutions_release.nq,euroceanorgs_release.nq,euroceanprojects_release.nq,euroceanvessels_release.nq,gbif_release.nq,inanodc_release.nq,incois_release.nq,invemardocuments_release.nq,invemarexperts_release.nq,invemargeo_release.nq,invemarinstitutions_release.nq,invemartraining_release.nq,invemarvessels_release.nq,isa_release.nq,marcobolo_release.nq,marineie_release.nq,marinetraining_release.nq,maspawio_release.nq,medin_release.nq,metsrcn_release.nq,mims_release.nq,ncei_release.nq,obis_release.nq,obps_release.nq,oceanexpert_release.nq,oceanexperts_release.nq,oceanscape_release.nq,odiscat_release.nq,openasfa_release.nq,osmc_release.nq,pdh_release.nq,pedp_release.nq,r2r_release.nq,rda_release.nq,spase_release.nq,unep_release.nq,wiosymphony_release.nq,wod_release.nq,zmt_release.nq
+# PROV_FILES        = africaioc_prov.nq,aquadocs_prov.nq,bebop_prov.nq,benguelacc_prov.nq,caribbeanmarineatlas_prov.nq,cioos_prov.nq,edmerp_prov.nq,edmo_prov.nq,euroceanorgs_prov.nq,inanodc_prov.nq,invemardocuments_prov.nq,invemarexperts_prov.nq,invemarinstitutions_prov.nq,invemartraining_prov.nq,invemarvessels_prov.nq,marinetraining_prov.nq,maspawio_prov.nq,obis_prov.nq,obps_prov.nq,oceanexperts_prov.nq,pdh_prov.nq
+GET_DATA_CMD      = echo ${DATA_FILES} | tr ',' '\n' | xargs -I{} wget -c ${BASE_URL}/{}
+DESCRIPTION       = ODIS Ocean metadata ${BASE_URL}
+TEXT_DESCRIPTION  = ODIS release graph description
+FORMAT            = nq
+
+[index]
+INPUT_FILES     = *.nq
+CAT_INPUT_FILES =  cat ${INPUT_FILES}
+# MULTI_INPUT_JSON
+# CAT_INPUT_FILES = ( cat ./data-doos/*.nq )
+SETTINGS_JSON   = { "ascii-prefixes-only": true, "num-triples-per-batch": 100000 }
+
+[server]
+PORT               = 7007
+#ACCESS_TOKEN       = ${data:NAME}_7643543846_6dMISzlPrD7i
+MEMORY_FOR_QUERIES = 25G
+CACHE_MAX_SIZE     = 20G
+TIMEOUT            = 240s
+
+[runtime]
+SYSTEM = docker
+IMAGE  = docker.io/adfreiburg/qlever:latest
+
+[ui]
