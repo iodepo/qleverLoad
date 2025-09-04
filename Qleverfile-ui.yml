@@ -3,7 +3,8 @@ config:
     name: Default
     slug: default
     sortKey: 1
-    baseUrl: http://workstation.lan:7007
+    # The url the SPARQL server is running on
+    baseUrl: http://localhost:7007
     apiToken: ""
     isDefault: true
     isNoSlugMode: "False"
@@ -249,11 +250,10 @@ config:
       } GROUP BY ?qleverui_entity ORDER BY DESC(?qleverui_count)
 
       # ENDIF #
-    mapViewBaseURL: "http://workstation.lan:9090"
+    mapViewBaseURL: "http://localhost:9090"
   examples:
     - name: test
       sort_key: "~"
-      query:  |- 
+      query: |-
         select * where {?s ?p ?o}
         limit 1000
-
